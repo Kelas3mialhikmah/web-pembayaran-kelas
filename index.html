@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administrasi Pembayaran Kelas</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Form Pembayaran</h1>
+    <form id="formPembayaran">
+      <input type="text" id="nama" placeholder="Nama" required />
+      <input type="text" id="kelas" placeholder="Kelas" required />
+      <input type="number" id="jumlah" placeholder="Jumlah (Rp)" required />
+      <select id="jenis" required>
+        <option value="">-- Pilih Jenis Pembayaran --</option>
+        <option value="Syariah">Syariah</option>
+        <option value="Buku">Buku</option>
+        <option value="Kas">Kas</option>
+        <option value="Lainnya">Lainnya</option>
+      </select>
+      <button type="submit">Kirim</button>
+    </form>
+    <p id="pesan"></p>
+  </div>
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz_JNOQN22IVssrPz43G8STkOXeqLaH5nIkEfOpIGhITtH-glYkqanqjKb_4D-8D8_G/exec'; // Ganti dengan URL dari Google Apps Script
+
+    document.getElementById('formPembayaran').addEventListener('submit', e => {
+      e.preventDefault();
+      const data = {
+        nama: document.getElementById('nama').value,
+        kelas: document.getElementById('kelas').value,
+        jumlah: document.getElementById('jumlah').value,
+        jenis: document.getElementById('jenis').value
+      };
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        document.getElementById('pesan').textContent = '✅ Data berhasil dikirim!';
+        document.getElementById('formPembayaran').reset();
+      })
+      .catch(error => {
+        document.getElementById('pesan').textContent = '❌ Gagal mengirim data.';
+        console.error('Error!', error.message);
+      });
+    });
+  </script>
+</body>
+</html>
